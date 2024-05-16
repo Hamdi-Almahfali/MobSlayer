@@ -7,7 +7,7 @@ using CatmullRom;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace Source
+namespace MobSlayer
 {
     internal class Level
     {
@@ -30,10 +30,10 @@ namespace Source
         }
         public void Draw(SpriteBatch sb)
         {
-            sb.Draw(Assets.bg_ground_tiles_0, new Vector2(0, 0), Color.White);
-            sb.Draw(Assets.bg_ground_tiles_0, new Vector2(0, 450), Color.White);
+            //sb.Draw(Assets.bg_ground_tiles_0, new Vector2(0, 0), Color.White);
+            //sb.Draw(Assets.bg_ground_tiles_0, new Vector2(0, 450), Color.White);
             sb.End();
-            cpath_road.DrawFill(gd, TextureHandler.texture_road);
+            //cpath_road.DrawFill(gd, Assets.texture_road);
             sb.Begin();
             sb.DrawRectangle(new Rectangle(800, 0, 400, 900), Data.HexToColor("#141010"));
         }

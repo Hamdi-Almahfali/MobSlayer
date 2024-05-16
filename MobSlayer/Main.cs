@@ -6,8 +6,11 @@ namespace MobSlayer
 {
     public class Main : Game
     {
-        private GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
+        internal static GameStateManager gsm;
+
+        public static GraphicsDeviceManager graphics;
+        public static SpriteBatch spriteBatch;
+        
 
         public Main()
         {
@@ -18,7 +21,10 @@ namespace MobSlayer
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            // SET SCREEN SIZE
+            Data.SetScreenSize(graphics);
+
+            gsm = new();
 
             base.Initialize();
         }
@@ -26,25 +32,28 @@ namespace MobSlayer
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            Assets.LoadTextures(Content);
 
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            // Update State Manager
+            gsm.Update(gameTime);
 
-            // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            string hexColorCode = "#1b0d35";
+            Color color = Data.HexToColor(hexColorCode);
 
-            // TODO: Add your drawing code here
+            GraphicsDevice.Clear(color);
+            
+
+            gsm.Draw(spriteBatch);
 
             base.Draw(gameTime);
         }

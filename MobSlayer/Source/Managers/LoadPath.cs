@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Source
+namespace MobSlayer
 {
     internal static class LoadPath
     {
@@ -14,7 +14,7 @@ namespace Source
             string[] lines = System.IO.File.ReadAllLines(fileName);
             foreach (string line in lines)
             {
-                path.AddPoint(InputParser.parse_Vector2(line));
+                //path.AddPoint(InputParser.parse_Vector2(line));
             }
         }
     }

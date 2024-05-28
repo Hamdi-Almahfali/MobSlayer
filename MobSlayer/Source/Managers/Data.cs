@@ -11,7 +11,7 @@ namespace MobSlayer
     internal static class Data
     {
         public const int tileSize = 32;
-        public static int screenW = 1000;
+        public static int screenW = 1200;
         public static int screenH = 900;
 
         public static void SetScreenSize(GraphicsDeviceManager graphics)

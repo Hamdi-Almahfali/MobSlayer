@@ -10,7 +10,7 @@ namespace MobSlayer
 
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
-        
+
 
         public Main()
         {
@@ -23,9 +23,8 @@ namespace MobSlayer
         {
             // SET SCREEN SIZE
             Data.SetScreenSize(graphics);
-
-            gsm = new();
-
+            Window.AllowAltF4 = false;
+            Window.Title = "Dragon Hunter";
             base.Initialize();
         }
 
@@ -33,7 +32,7 @@ namespace MobSlayer
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Assets.LoadTextures(Content);
-
+            gsm = new(Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -50,7 +49,7 @@ namespace MobSlayer
             string hexColorCode = "#1b0d35";
             Color color = Data.HexToColor(hexColorCode);
 
-            GraphicsDevice.Clear(color);
+            GraphicsDevice.Clear(Color.Black);
             
 
             gsm.Draw(spriteBatch);

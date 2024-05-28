@@ -24,7 +24,7 @@ namespace MobSlayer
 
             cpath_road.Clear();
 
-            LoadPath.LoadPathFromFile(cpath_road, "carpath1.txt");
+            LoadPath.LoadPathFromFile(cpath_road, "monsterPath1.txt");
 
             cpath_road.DrawFillSetup(gd, 40, 30, 150);
         }

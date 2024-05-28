@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Source;
 using MobSlayer.Source.Scenes.Menu;
+using Microsoft.Xna.Framework.Content;
 
 namespace MobSlayer
 {
@@ -11,6 +12,8 @@ namespace MobSlayer
         // Declaring scenes
         MenuScene menuScene;
         GameScene gameScene;
+
+        ContentManager content;
 
         // Game states
         public enum GameState
@@ -27,8 +30,10 @@ namespace MobSlayer
             get => _state;
             set => _state = value;
         }
-        public GameStateManager()
+        public GameStateManager(ContentManager content)
         {
+            this.content = content;
+
             Create();
         }
         public void Create()
@@ -83,6 +88,7 @@ namespace MobSlayer
             {
                 case GameState.Menu:
                     menuScene = new();
+                    menuScene.Create(content);
                     break;
                 case GameState.Settings:
                     break;

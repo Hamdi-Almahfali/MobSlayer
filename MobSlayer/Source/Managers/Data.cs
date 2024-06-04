@@ -62,6 +62,34 @@ namespace MobSlayer
 
             return new Color(r, g, b, a);
         }
+        #region Catmull methods
+        public static Vector2 parse_Vector2(string line)
+        {
+            int[] array = parse_ints(line);
+            return new Vector2(array[0], array[1]);
+        }
+        public static int parse_int(string str)
+        {
+            if (!int.TryParse(str, out var result))
+            {
+                Console.WriteLine("Couldn't parse '" + str + "' to int");
+            }
+
+            return result;
+        }
+
+        public static int[] parse_ints(string str)
+        {
+            string[] array = str.Split(',');
+            int[] array2 = new int[array.Length];
+            for (int i = 0; i < array.Length; i++)
+            {
+                array2[i] = parse_int(array[i]);
+            }
+
+            return array2;
+        }
+        #endregion
     }
 }
 

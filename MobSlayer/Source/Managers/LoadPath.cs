@@ -1,12 +1,7 @@
 ﻿using CatmullRom;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Input;
 
 namespace MobSlayer
 {
@@ -17,7 +12,7 @@ namespace MobSlayer
             string[] lines = System.IO.File.ReadAllLines(file);
             foreach (string line in lines)
             { 
-                //path.AddPoint(InputParser.parse_Vector2(line));
+                path.AddPoint(Data.parse_Vector2(line));
             }
         }
 

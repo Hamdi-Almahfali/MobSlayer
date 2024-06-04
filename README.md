@@ -1,6 +1,6 @@
 # 2D MonoGame Tower Defense
 
-![Game Screenshot](screenshot.png)
+![Game Title](DragonHunter.png)
 
 ## Table of Contents
 - [About](#about)
@@ -9,7 +9,6 @@
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
 - [Acknowledgements](#acknowledgements)
@@ -21,8 +20,8 @@ This is a 2D Tower Defense game developed using MonoGame. In this game, players 
 - Multiple tower types with unique abilities
 - Different enemy types with varying behaviors
 - Upgradable towers and abilities
-- Diverse levels with increasing difficulty
-- Rich graphics and sound effects
+- Diverse levels with increasing wave difficulty
+- Pixel-art graphics with 8bit music
 
 ## Getting Started
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
@@ -31,15 +30,16 @@ Follow these instructions to get a copy of the project up and running on your lo
 - [MonoGame](https://www.monogame.net/)
 - [Visual Studio](https://visualstudio.microsoft.com/) or [Visual Studio Code](https://code.visualstudio.com/)
 - .NET Core SDK
+- DirectX
 
 ### Installation
 1. **Clone the repository:**
     ```sh
-    git clone https://github.com/yourusername/2d-monogame-tower-defense.git
+    git clone https://github.com/Hamdi-Almahfali/MobSlayer.git
     ```
 2. **Navigate to the project directory:**
     ```sh
-    cd 2d-monogame-tower-defense
+    cd MobSlayer
     ```
 3. **Restore the dependencies:**
     ```sh
@@ -62,21 +62,13 @@ Follow these instructions to get a copy of the project up and running on your lo
     - Upgrade towers by clicking on them and selecting upgrade options.
     - Defend against waves of enemies and prevent them from reaching the end of the path.
 
-## Contributing
-Contributions are welcome! Please follow these steps to contribute:
-1. Fork the Project.
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`).
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`).
-4. Push to the Branch (`git push origin feature/AmazingFeature`).
-5. Open a Pull Request.
-
 ## License
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
-Your Name - [@yourusername](https://twitter.com/yourusername) - youremail@example.com
+Discord - [@outlawvl](https://discord.gg/Y55Ydchrnz)
 
-Project Link: [https://github.com/yourusername/2d-monogame-tower-defense](https://github.com/yourusername/2d-monogame-tower-defense)
+Project Link: [Dragon Hunter](https://github.com/Hamdi-Almahfali/MobSlayer)
 
 ## Acknowledgements
 - [MonoGame](https://www.monogame.net/)

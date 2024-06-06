@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MobSlayer;
 using Source;
 using Spline;
 using System;
@@ -13,12 +12,18 @@ using System.Threading.Tasks;
 
 namespace MobSlayer
 {
-    internal class GameScene
+    public class GameScene
     {
-
-        SimplePath path;
-        StrongBat bat;
-        float batPos;
+        public GameState CurrentGameState { get => _gameState; }
+        public enum GameState
+        {
+            Intro,
+            Wave1,
+            Wave2,
+            Wave3,
+            Outro
+        }
+        private GameState _gameState;
 
         public GameScene()
         {
@@ -26,18 +31,7 @@ namespace MobSlayer
         }
         public void Create()
         {
-            path = new SimplePath(Main.graphics.GraphicsDevice);
-
-            bat = new(Vector2.Zero, Assets.tex_enemy_batS, new Vector2(86, 60), 8);
-            batPos = path.beginT;
-            path.SetPos(0, Vector2.Zero);
-            path.Clean();
-            path.AddPoint(new Vector2(0, 300));
-            path.AddPoint(new Vector2(400, 300));
-            path.AddPoint(new Vector2(401, 300));
-            path.AddPoint(new Vector2(500, 500));
-            path.AddPoint(new Vector2(501, 500));
-            path.AddPoint(new Vector2(Data.screenW, 500));
+            
 
 
         }

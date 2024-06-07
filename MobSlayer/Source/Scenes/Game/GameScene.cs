@@ -15,11 +15,11 @@ namespace MobSlayer
     {
         #region Public properties
         public int Money { get => _money; set => _money = value; }
-        public int Health { get => _health; }
+        public int Health { get => _health; set => _health = value; }
+        public int EnemiesAlive { get => _enemiesAlive; set => _enemiesAlive = value; }
         public GameState CurrentGameState { get => _gameState; }
         public enum GameState
         {
-            Intro,
             Wave1,
             Wave2,
             Wave3,
@@ -36,11 +36,14 @@ namespace MobSlayer
         private List<Vector2> controlPoints;
         private Texture2D texture_controlPoints;
 
+        private Wave _currentWave;
+
 
         RenderTarget2D _renderTarget; // Level's render target
 
         private int _money;
         private int _health; // Health goes from 0(dead) to 10(full)
+        private int _enemiesAlive;
         // Gui shop
         public GuiShop _guiShop;
 
@@ -50,21 +53,22 @@ namespace MobSlayer
         }
         public void Create()
         {
+            _currentWave = new Wave((int)_gameState);
             _level = new Level(Main.graphics.GraphicsDevice);
             _towerList = new List<Tower>();
-            _monsterManager = new(Main.graphics.GraphicsDevice);
+            _monsterManager = new(Main.graphics.GraphicsDevice, _currentWave);
 
             _showWaveTitle = new ShowWaveTitle(_gameState);
             _guiShop = new GuiShop(this);
 
-            _money = 507;
+            _money = BN.StartingMoney;
             _health = 10;
 
             _renderTarget = new RenderTarget2D(Main.graphics.GraphicsDevice,
             Main.graphics.GraphicsDevice.Viewport.Width, Main.graphics.GraphicsDevice.Viewport.Height);
 
 
-            string hexColorCode = "#a6b04f";
+            string hexColorCode = "#7a5997";
             Color color = Data.HexToColor(hexColorCode);
             Main.graphics.GraphicsDevice.Clear(color);
 
@@ -99,19 +103,19 @@ namespace MobSlayer
             //Sätt GraphicsDevice att åter igen peka på skärmen
             Main.graphics.GraphicsDevice.SetRenderTarget(null);
 
-            string hexColorCode = "#a6b04f";
+            string hexColorCode = "#523d66";
             Color color = Data.HexToColor(hexColorCode);
             Main.graphics.GraphicsDevice.Clear(color);
             sb.Begin();
             _level.Draw(sb);
             _monsterManager.Draw(sb);
-            _showWaveTitle.Draw(sb);
 
             foreach (Tower tower in _towerList)
             {
                 tower.Draw(sb);
             }
             _guiShop.Draw(sb);
+            _showWaveTitle.Draw(sb);
             sb.End();
 
         }
@@ -124,6 +128,15 @@ namespace MobSlayer
                 _guiShop.towerItem = null;
                 _guiShop.ItemInHand = false;
             }
+        }
+        public void NextWave()
+        {
+            _gameState++;
+            _showWaveTitle = new ShowWaveTitle(_gameState);
+            _currentWave = new Wave((int)_gameState);
+            _monsterManager.ChangeWave(_currentWave);
+            _monsterManager.enemies = new List<Enemy>();
+
         }
         private bool CanPlace(GameObject g)
         {

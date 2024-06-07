@@ -15,7 +15,7 @@ namespace MobSlayer
         private Texture2D turretTexture;
         // Turret properties
         private float shootSpeed = 1f;
-        private int damage = 5;
+        private int damage = 3;
         private int aoeRadius;
         private int slowDuration;
         private int range;
@@ -156,15 +156,22 @@ namespace MobSlayer
             {
                 case Item.ItemType.Basic:
                     turretTexture = Assets.tex_obj_turret1;
-                    range = 220;
+                    range = BN.ShooterRange;
+                    damage = BN.ShooterDamage;
+                    shootSpeed = BN.ShooterShotSpeed;
                     break;
                 case Item.ItemType.Cannon:
                     turretTexture = Assets.tex_obj_turret3;
-                    range = 140;
+                    range = BN.CannonRange;
+                    damage = BN.CannonDamage;
+                    shootSpeed = BN.CannonShotSpeed;
+                    aoeRadius = BN.CannonAoe;
                     break;
                 case Item.ItemType.Icy:
                     turretTexture = Assets.tex_obj_turret2;
-                    range = 300;
+                    range = BN.FrostRange;
+                    shootSpeed = BN.FrostShotSpeed;
+                    damage = BN.FrostDamage;
                     break;
                 default:
                     break;

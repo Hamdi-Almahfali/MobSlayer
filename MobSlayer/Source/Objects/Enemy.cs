@@ -39,10 +39,11 @@ namespace MobSlayer
         // Actually rectange to draw the sprite
         Rectangle source;
 
-        public Enemy(int reward, Vector2 position, Texture2D texture, int frameCount, int speed) : base(position, texture)
+        public Enemy(int reward, float moveSpeed, Vector2 position, Texture2D texture, int frameCount, int speed) : base(position, texture)
         {
             _hitbox.X = (int)position.X;
             _hitbox.Y = (int)position.Y;
+            curve_speed = moveSpeed;
             CalculateFrames(frameCount, speed);
             float tension = 0.9f;
             cpath_moving = new(Main.graphics.GraphicsDevice, tension);
@@ -55,6 +56,9 @@ namespace MobSlayer
 
         public void Update(GameTime gt)
         {
+            Debug.Print(Main.gsm.gameScene._monsterManager.CurrentWave.nrOfmonstInCurrentWave.ToString());
+            if (_isHit)
+                return;
             _position.X = _hitbox.X;
             _position.Y = _hitbox.Y;
 
@@ -68,7 +72,10 @@ namespace MobSlayer
 
                 Position = vec;
             }
-
+            if (curve_curpos >= 1)
+            {
+                DamagePlayer();
+            }
             // Kill if health below 0
             if (_health <= 0)
                 Kill();
@@ -85,24 +92,45 @@ namespace MobSlayer
                 sb.Draw(_texture, _position, source, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
                 //sb.Draw(Assets.tex_obj_platform1, _position, Color.White);
                 //DrawMovingObject(curve_curpos, sb);
-                DrawHealth(sb);
+                if (_health != _maxHealth)
+                    DrawHealth(sb);
             }
         }
         public void Kill()
         {
             if (!_isHit)
             {
-            _isHit = true;
-            Main.gsm.gameScene.Money += reward;
+                _isHit = true;
+                if (Main.gsm.gameScene.EnemiesAlive == 1 && Main.gsm.gameScene._monsterManager.CurrentWave.nrOfmonstInCurrentWave <= 0)
+                {
+                    Main.gsm.gameScene.NextWave();
+                    Main.gsm.gameScene._monsterManager.enemies.Remove(this);
+                }
+                Main.gsm.gameScene.EnemiesAlive--;
+                Main.gsm.gameScene.Money += reward;
+            }
+        }
+        public void DamagePlayer()
+        {
+            if (!_isHit)
+            {
+                if (Main.gsm.gameScene.EnemiesAlive == 1 && Main.gsm.gameScene._monsterManager.CurrentWave.nrOfmonstInCurrentWave <= 0)
+                {
+                    Main.gsm.gameScene.NextWave();
+                    Main.gsm.gameScene._monsterManager.enemies.Remove(this);
+                }
+                Main.gsm.gameScene.EnemiesAlive--;
+                _isHit = true;
+                Main.gsm.gameScene.Health--;
             }
         }
         public void DrawHealth(SpriteBatch sb)
         {
-            var maxSize = new Point(30, 2);
+            var maxSize = new Point(70, 2);
 
             var color = new Color();
             color.R = (byte)MathHelper.Min((510 * (_maxHealth - _health)) / 100, 255);
-            color.G = (byte)MathHelper.Min((510 * _health) / _maxHealth, 255);
+            color.G = (byte)255;
 
             var size = (float)maxSize.X * ((float)_health / (float)_maxHealth);
             var position = _position.ToPoint() - new Point(0, 10);

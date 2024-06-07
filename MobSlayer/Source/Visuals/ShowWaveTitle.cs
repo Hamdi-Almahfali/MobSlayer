@@ -59,7 +59,7 @@ namespace MobSlayer
                     _texture = Assets.tex_game_wave3;
                     break;
                 default:
-                    _texture = Assets.tex_game_wave1;
+                    _texture = Assets.tex_game_wave3;
                     break;
             }
         }

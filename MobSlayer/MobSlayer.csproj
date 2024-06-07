@@ -12,6 +12,11 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Content\assets\NewFolder\**" />
+    <EmbeddedResource Remove="Content\assets\NewFolder\**" />
+    <None Remove="Content\assets\NewFolder\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Content\bin\Windows\Content\pixeFont.xnb" />
     <None Remove="Content\bin\Windows\pixeFont.xnb" />
     <None Remove="Content\font.spritefont" />
@@ -32,6 +37,9 @@
     <Reference Include="Spline">
       <HintPath>..\..\..\..\..\Downloads\Spline.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\assets\Objects\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

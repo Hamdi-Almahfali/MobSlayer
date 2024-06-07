@@ -9,33 +9,28 @@ using Microsoft.Xna.Framework;
 
 namespace MobSlayer
 {
-    internal class Level
+    public class Level
     {
-        CatmullRomPath cpath_road;
-        float curve_pos = 0;
+        public CatmullRomPath cpath_road;
+        public float curve_pos = 0;
 
         GraphicsDevice gd;
 
         public Level(GraphicsDevice gd)
         {
             this.gd = gd;
-            float tension = 1f;
+            float tension = 0.9f;
             cpath_road = new CatmullRomPath(this.gd, tension);
 
             cpath_road.Clear();
 
             LoadPath.LoadPathFromFile(cpath_road, "monsterPath1.txt");
 
-            cpath_road.DrawFillSetup(gd, 40, 30, 150);
+            cpath_road.DrawFillSetup(gd, 34, 50, 200);
         }
         public void Draw(SpriteBatch sb)
         {
-            //sb.Draw(Assets.bg_ground_tiles_0, new Vector2(0, 0), Color.White);
-            //sb.Draw(Assets.bg_ground_tiles_0, new Vector2(0, 450), Color.White);
-            sb.End();
-            //cpath_road.DrawFill(gd, Assets.texture_road);
-            sb.Begin();
-            sb.DrawRectangle(new Rectangle(800, 0, 400, 900), Data.HexToColor("#141010"));
+            cpath_road.DrawFill(gd, Assets.tex_env_sand0);
         }
     }
 }

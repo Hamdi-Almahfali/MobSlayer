@@ -8,52 +8,47 @@ using System.Threading.Tasks;
 
 namespace MobSlayer
 {
-    internal class MonsterManager
+    public class MonsterManager
     {
-        //List<Bat> bats;
+        public List<Enemy> enemies;
         GraphicsDevice gd;
-        int timeSinceLastCar = 0;
-        int mBetweenCreation = 1500;
-        int nrOfCarsInCurrentWave = 10;
+        int timeSinceLastMonst = 0;
+        int mBetweenCreation = 500;
+        int nrOfmonstInCurrentWave = 50;
 
         public MonsterManager(GraphicsDevice gd)
         {
             this.gd = gd;
-            //bats = new List<Bat>();
+            enemies = new List<Enemy>();
         }
         public void LoadWave(GameTime gt)
         {
-            timeSinceLastCar += gt.ElapsedGameTime.Milliseconds;
-            if (nrOfCarsInCurrentWave > 0 && timeSinceLastCar > mBetweenCreation)
+            timeSinceLastMonst += gt.ElapsedGameTime.Milliseconds;
+            if (nrOfmonstInCurrentWave > 0 && timeSinceLastMonst > mBetweenCreation)
             {
-                timeSinceLastCar -= mBetweenCreation;
-                //Bat c = new(null, Assets.spr_mob_bat_0, 1, gd);
-                //bats.Add(c);
-                --nrOfCarsInCurrentWave;
+                timeSinceLastMonst -= mBetweenCreation;
+                StrongBat c = new(1,Main.gsm.gameScene._level.cpath_road.EvaluateAt(0), Assets.tex_enemy_batS, 5, 10);
+                enemies.Add(c);
+                --nrOfmonstInCurrentWave;
             }
         }
 
         public void Update(GameTime gt)
         {
             LoadWave(gt);
-            //foreach (Bat c in bats)
-            //{
-            //    c.Update(gt);
-            //}
+            foreach (Enemy c in enemies)
+            {
+                c.Update(gt);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            //foreach (Bat c in bats)
-            //{
-            //    if (!c.isHit)
-            //        c.Draw(spriteBatch);
-            //}
-            //foreach (Bat c in bats)
-            //{
-            //    if (!c.isHit)
-            //        c.DrawHealth(spriteBatch);
-            //}
+            foreach (Enemy c in enemies)
+            {
+                if (!c.IsHit)
+                    c.Draw(spriteBatch);
+            }
 
         }
     }

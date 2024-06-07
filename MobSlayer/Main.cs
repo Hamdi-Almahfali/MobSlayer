@@ -11,7 +11,6 @@ namespace MobSlayer
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
 
-
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -33,21 +32,28 @@ namespace MobSlayer
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Assets.LoadTextures(Content);
             gsm = new(Content);
+            // Inside LoadContent method
+            // Inside LoadContent method
+            Pixel = new Texture2D(GraphicsDevice, 1, 1);
+            Pixel.SetData(new[] { Color.White
+    });
         }
 
         protected override void Update(GameTime gameTime)
         {
             // Update State Manager
             gsm.Update(gameTime);
-
+            // DEBUG
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                gsm.ChangeLevel(GameStateManager.GameState.Menu);
+            }
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            string hexColorCode = "#1b0d35";
-            Color color = Data.HexToColor(hexColorCode);
 
             GraphicsDevice.Clear(Color.Black);
             
@@ -56,5 +62,10 @@ namespace MobSlayer
 
             base.Draw(gameTime);
         }
+        public static Texture2D Pixel { get; private set; }
+
+
     }
+
+
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
-using Source;
 using MobSlayer.Source.Scenes.Menu;
 using Microsoft.Xna.Framework.Content;
 
@@ -10,8 +9,8 @@ namespace MobSlayer
     internal class GameStateManager
     {
         // Declaring scenes
-        MenuScene menuScene;
-        GameScene gameScene;
+        public MenuScene menuScene;
+        public GameScene gameScene;
 
         ContentManager content;
 
@@ -42,8 +41,6 @@ namespace MobSlayer
         }
         public void Update(GameTime gt)
         {
-            KeysStates.Update();
-
             switch (_state)
             {
                 case GameState.Menu:
@@ -52,6 +49,8 @@ namespace MobSlayer
                 case GameState.Settings:
                     break;
                 case GameState.Game:
+                    // Update keys states
+                    KeysStates.Update();
                     gameScene.Update(gt);
                     break;
                 case GameState.Win:
@@ -72,9 +71,7 @@ namespace MobSlayer
                 case GameState.Settings:
                     break;
                 case GameState.Game:
-                    sb.Begin();
                     gameScene.Draw(sb);
-                    sb.End();
                     break;
                 case GameState.Win:
                     break;
@@ -89,6 +86,7 @@ namespace MobSlayer
                 case GameState.Menu:
                     menuScene = new();
                     menuScene.Create(content);
+                    State = level;
                     break;
                 case GameState.Settings:
                     break;

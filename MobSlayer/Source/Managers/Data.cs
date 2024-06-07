@@ -46,6 +46,8 @@ namespace MobSlayer
 
             spriteBatch.Draw(pixel, rectangle, color);
         }
+
+
         public static Color HexToColor(string hex)
         {
             hex = hex.Replace("#", "");
@@ -90,6 +92,17 @@ namespace MobSlayer
             return array2;
         }
         #endregion
+    }
+    public static class SpriteBatchExtensions
+    {
+        public static void DrawLine(this SpriteBatch spriteBatch, Vector2 start, Vector2 end, Color color, float thickness = 1f)
+        {
+            Vector2 delta = end - start;
+            float angle = (float)Math.Atan2(delta.Y, delta.X);
+            float length = delta.Length();
+
+            spriteBatch.Draw(Main.Pixel, start, null, color, angle, Vector2.Zero, new Vector2(length, thickness), SpriteEffects.None, 0);
+        }
     }
 }
 

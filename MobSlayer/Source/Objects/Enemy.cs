@@ -5,38 +5,124 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using CatmullRom;
+using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace MobSlayer
 {
-    internal abstract class Enemy : GameObject
+    public abstract class Enemy : GameObject
     {
-        Vector2 _size;
-
         int columns;
         int totalFrames;
         float timePerFrame;
+        int frameWidth; // Width of each frame
+        int frameHeight; // Height of each frame
+
+        protected int reward;
+
+        protected CatmullRomPath cpath_moving;
+        protected float curve_curpos = 0;
+        float curve_speed = 0.1f;
+
+        protected int _pathIndex;
+
+        protected int _maxHealth = 10;
+        protected int _health = 10;
+
+        protected bool _isHit;
+
+        public bool IsHit { get { return _isHit; } }
+        public int Health { get { return _health; } set { _health = value; } }
 
         // Actually rectange to draw the sprite
         Rectangle source;
 
-        public Enemy(Vector2 position, Texture2D texture, Vector2 size, int speed) : base(position, texture)
+        public Enemy(int reward, Vector2 position, Texture2D texture, int frameCount, int speed) : base(position, texture)
         {
-            _size = size;
-            Create(size, speed);
+            _hitbox.X = (int)position.X;
+            _hitbox.Y = (int)position.Y;
+            CalculateFrames(frameCount, speed);
+            float tension = 0.9f;
+            cpath_moving = new(Main.graphics.GraphicsDevice, tension);
+            cpath_moving.Clear();
+            LoadPath.LoadPathFromFile(cpath_moving, "monsterPath1.txt");
+
+            cpath_moving.DrawFillSetup(Main.graphics.GraphicsDevice, 34, 50, 200);
+            this.reward = reward;
         }
-        public void Update(GameTime gameTime)
+
+        public void Update(GameTime gt)
         {
-            CalculateFrames(gameTime);
+            _position.X = _hitbox.X;
+            _position.Y = _hitbox.Y;
+
+            CalculateFrames(gt);
+            curve_curpos += curve_speed * (float)gt.ElapsedGameTime.TotalSeconds;
+            if (curve_curpos < 1 & curve_curpos > 0)
+            {
+                Vector2 vec = cpath_moving.EvaluateAt(curve_curpos);
+                _hitbox.X = (int)vec.X;
+                _hitbox.Y = (int)vec.Y;
+
+                Position = vec;
+            }
+
+            // Kill if health below 0
+            if (_health <= 0)
+                Kill();
         }
         public void Draw(SpriteBatch sb)
         {
             // Draw the current frame
-            sb.Draw(texture, Position, source, Color.White, 0, new Vector2(_size.X / 2, _size.Y / 2), 1, SpriteEffects.None, 0);
+            if (_texture == null)
+                return;
+            var level = Main.gsm.gameScene._level;
+            if (curve_curpos < 1 & curve_curpos > 0)
+            {
+                var center = new Vector2(_texture.Width / 2, _texture.Height / 2);
+                sb.Draw(_texture, _position, source, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                //sb.Draw(Assets.tex_obj_platform1, _position, Color.White);
+                //DrawMovingObject(curve_curpos, sb);
+                DrawHealth(sb);
+            }
         }
-        private void Create(Vector2 size, int speed)
+        public void Kill()
         {
+            if (!_isHit)
+            {
+            _isHit = true;
+            Main.gsm.gameScene.Money += reward;
+            }
+        }
+        public void DrawHealth(SpriteBatch sb)
+        {
+            var maxSize = new Point(30, 2);
+
+            var color = new Color();
+            color.R = (byte)MathHelper.Min((510 * (_maxHealth - _health)) / 100, 255);
+            color.G = (byte)MathHelper.Min((510 * _health) / _maxHealth, 255);
+
+            var size = (float)maxSize.X * ((float)_health / (float)_maxHealth);
+            var position = _position.ToPoint() - new Point(0, 10);
+
+            sb.Draw(Assets.texHP, new Rectangle(position - new Point(1, 1), maxSize + new Point(2, 2)), Color.Black);
+            sb.Draw(Assets.texHP, new Rectangle(position, new Point((int)size, maxSize.Y)), color);
+
+        }
+
+        private void CalculateFrames(int frameCount, int speed)
+        {
+            if (_texture == null)
+                return;
+
+            // Calculate the width and height of each frame
+            frameWidth = _texture.Width / frameCount;
+            frameHeight = _texture.Height;
+
             // Calculate the number of frames horizontally and vertically
-            columns = texture.Width / (int)size.X;
+            columns = frameCount;
 
             // Calculate the total number of frames
             totalFrames = columns;
@@ -44,13 +130,17 @@ namespace MobSlayer
             // Calculate the frame index based on time and speed
             timePerFrame = 1f / speed;
         }
+
         private void CalculateFrames(GameTime gameTime)
         {
+            if (_texture == null || totalFrames == 0)
+                return;
+
             int frameIndex = (int)(gameTime.TotalGameTime.TotalSeconds / timePerFrame) % totalFrames;
 
             // Calculate the source rectangle for the current frame
-            source = new Rectangle(frameIndex * (int)_size.X, 0, (int)_size.X, (int)_size.Y);
-
+            source = new Rectangle(frameIndex * frameWidth, 0, frameWidth, frameHeight);
         }
     }
 }
+

@@ -10,8 +10,10 @@ namespace MobSlayer
 {
     internal class StrongBat : Enemy
     {
-        public StrongBat(Vector2 position, Texture2D texture, Vector2 size, int speed) : base(position, texture, size, speed)
+        public StrongBat(int reward, Vector2 position = default, Texture2D texture = default, int size = default, int speed = default)
+           : base(reward, position, texture, size, speed)
         {
+            _texture = Assets.tex_enemy_batS;
         }
     }
 }

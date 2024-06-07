@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 
-namespace Source
+namespace MobSlayer
 {
     static class KeysStates
     {

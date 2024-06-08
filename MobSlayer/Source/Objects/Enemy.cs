@@ -24,8 +24,8 @@ namespace MobSlayer
 
         protected CatmullRomPath cpath_moving;
         protected float curve_curpos = 0;
-        float curve_speed = 0.1f;
-        float original_curve_speed;
+        protected float curve_speed = 0.1f;
+        protected float original_curve_speed;
         // Slow down effects
         protected int affectedByMovement = 1;
         private CustomTimer slowCooldown;
@@ -69,7 +69,6 @@ namespace MobSlayer
             slowCooldown.Update(gt);
             _position.X = _hitbox.X;
             _position.Y = _hitbox.Y;
-
             CalculateFrames(gt);
             curve_curpos += curve_speed * (float)gt.ElapsedGameTime.TotalSeconds;
             if (curve_curpos < 1 & curve_curpos > 0)
@@ -104,7 +103,7 @@ namespace MobSlayer
             if (curve_curpos < 1 & curve_curpos > 0)
             {
                 var center = new Vector2(_texture.Width / 2, _texture.Height / 2);
-                sb.Draw(_texture, _position, source, _spriteColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                sb.Draw(_texture, _position + center, source, _spriteColor, 0, center, 1, SpriteEffects.None, 0f);
                 //sb.Draw(Assets.tex_obj_platform1, _position, Color.White);
                 //DrawMovingObject(curve_curpos, sb);
                 if (_health != _maxHealth)
@@ -131,7 +130,7 @@ namespace MobSlayer
         }
         public void DamagePlayer()
         {
-            if (!_isHit)
+            if (!_isHit && !Main.gsm.gameScene.InfHealth)
             {
                 if (Main.gsm.gameScene.EnemiesAlive == 1 && Main.gsm.gameScene._monsterManager.CurrentWave.nrOfmonstInCurrentWave <= 0)
                 {

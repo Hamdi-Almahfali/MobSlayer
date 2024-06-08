@@ -3,16 +3,25 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using MobSlayer.Source.Scenes.Menu;
 using Microsoft.Xna.Framework.Content;
+using WinForm;
 
 namespace MobSlayer
 {
-    internal class GameStateManager
+    public class GameStateManager
     {
         // Declaring scenes
         public MenuScene menuScene;
         public GameScene gameScene;
+        public LossScene lossScene;
+
+        public bool IsPaused { get => _isPaused; set => _isPaused = value; }
 
         public BN BN;
+        Main main;
+
+        bool _isPaused = false;
+        public Form1 Form; // Windows forms
+
 
         ContentManager content;
 
@@ -31,16 +40,18 @@ namespace MobSlayer
             get => _state;
             set => _state = value;
         }
-        public GameStateManager(ContentManager content)
+        public GameStateManager(ContentManager content, Main main)
         {
             this.content = content;
             BN = new BN();
 
             Create();
+            this.main = main;
         }
         public void Create()
         {
             ChangeLevel(GameState.Menu);
+            Form = new Form1(main);
         }
         public void Update(GameTime gt)
         {
@@ -54,11 +65,14 @@ namespace MobSlayer
                 case GameState.Game:
                     // Update keys states
                     KeysStates.Update();
-                    gameScene.Update(gt);
+                    if (!Form.Pause)
+                        gameScene.Update(gt);
+                    GameControls();
                     break;
                 case GameState.Win:
                     break;
                 case GameState.Lose:
+                    lossScene.Update(gt);
                     break;
             }
         }
@@ -79,6 +93,7 @@ namespace MobSlayer
                 case GameState.Win:
                     break;
                 case GameState.Lose:
+                    lossScene.Draw(sb);
                     break;
             }
         }
@@ -103,7 +118,20 @@ namespace MobSlayer
                 case GameState.Win:
                     break;
                 case GameState.Lose:
+                    lossScene = new();
+                    lossScene.Create(content);
+                    State = level;
                     break;
+            }
+        }
+        private void GameControls()
+        {
+            if (KeysStates.KeyPressed(Keys.P))
+            {
+                if (Form.IsDisposed)
+                    Form = new Form1(main);
+                Form.Show();
+                Form.Text = "Cheats Panel";
             }
         }
     }

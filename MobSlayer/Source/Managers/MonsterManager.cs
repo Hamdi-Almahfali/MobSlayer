@@ -28,9 +28,18 @@ namespace MobSlayer
             timeSinceLastMonst += gt.ElapsedGameTime.Milliseconds;
             if (_currentWave.nrOfmonstInCurrentWave > 0 && timeSinceLastMonst > _currentWave.mBetweenCreation)
             {
+                Random random = new Random();
                 timeSinceLastMonst -= _currentWave.mBetweenCreation;
-                StrongBat c = new(Main.gsm.BN.BatKillReward, Main.gsm.BN.Wave1BatSpeed,Main.gsm.gameScene._level.cpath_road.EvaluateAt(0), Assets.tex_enemy_batS, 5, 10);
-                enemies.Add(c);
+                if (random.Next(5) == 0)
+                {
+                    WeakBat c = new(Main.gsm.BN.BirdKillReward, _currentWave.enemiesSpeed, Main.gsm.gameScene._level.cpath_road.EvaluateAt(0), Assets.tex_enemy_batW, 1, 1); 
+                    enemies.Add(c);
+                }
+                else
+                {
+                    StrongBat c = new(Main.gsm.BN.BatKillReward, _currentWave.enemiesSpeed,Main.gsm.gameScene._level.cpath_road.EvaluateAt(0), Assets.tex_enemy_batS, 5, 10);
+                    enemies.Add(c);
+                }
                 --_currentWave.nrOfmonstInCurrentWave;
                 Main.gsm.gameScene.EnemiesAlive++;
             }

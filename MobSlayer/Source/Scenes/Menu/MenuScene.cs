@@ -3,10 +3,11 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace MobSlayer.Source.Scenes.Menu
 {
-    internal class MenuScene
+    public class MenuScene
     {
         List<Button> menuButtons;
         Button btn_play;
@@ -66,7 +67,7 @@ namespace MobSlayer.Source.Scenes.Menu
         }
         private void CloseGame()
         {
-
+            Application.Exit();
         }
     }
 }

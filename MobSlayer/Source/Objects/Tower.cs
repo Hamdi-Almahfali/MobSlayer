@@ -13,10 +13,11 @@ namespace MobSlayer
     {
         private Item.ItemType type;
         private Texture2D turretTexture;
+        private float rotation;
         // Turret properties
         private float shootSpeed = 1f;
         private int damage = 3;
-        private int aoeRadius;
+        private float? aoeRadius;
         private float? slowDuration;
         private int range;
         private CustomTimer shootCooldown;
@@ -60,12 +61,20 @@ namespace MobSlayer
                 {
                     bestEnemy = enemy;
                     bestDist = Vector2.Distance(enemy.Position, _position);
-                    targetPosition = enemy.Position;
+                    
                 }
             }
-            if (bestEnemy != null && shootCooldown.IsDone())
+
+            if (bestEnemy != null)
             {
-                Shoot(bestEnemy);
+                targetPosition = bestEnemy.Position;
+                if (shootCooldown.IsDone())
+                {
+                    if (aoeRadius == null)
+                        Shoot(bestEnemy);
+                    else
+                        AOEShoot(bestEnemy);
+                }
             }
 
         }
@@ -77,7 +86,7 @@ namespace MobSlayer
             // Draw turret
             var origin = new Vector2(turretTexture.Width / 2, turretTexture.Height / 2);
             Vector2 direction = targetPosition - Position;
-            float rotation = (float)Math.Atan2(direction.Y, -direction.X);
+            rotation = MathHelper.Lerp(rotation,(float)Math.Atan2(direction.Y, -direction.X),0.2f);
             //turretPosition = new Vector2((int)Position.X, (int)Position.Y - turretTexture.Height / 2) + origin;
             turretPosition.X = MathHelper.Lerp(turretPosition.X, Position.X + origin.X, 0.2f);
             turretPosition.Y = MathHelper.Lerp(turretPosition.Y, Position.Y - turretTexture.Height / 2 + origin.Y, 0.2f);
@@ -98,6 +107,8 @@ namespace MobSlayer
             // Apply recoil in the opposite direction of the normalized direction vector
             turretPosition -= direction * 10;
 
+
+
             // Deal damage
             enemy.Health -= damage;
 
@@ -107,6 +118,34 @@ namespace MobSlayer
                 enemy.Slowdown((float)slowDuration);
             }
 
+            // Start shoot cooldown
+            shootCooldown.ResetAndStart(shootSpeed);
+        }
+        public void AOEShoot(Enemy enemy)
+        {
+            // Calculate direction vector from turret to enemy
+            Vector2 direction = enemy.Position - turretPosition;
+
+            // Normalize the direction vector to maintain direction but with a length of 1
+            direction.Normalize();
+
+            // Apply recoil in the opposite direction of the normalized direction vector
+            turretPosition -= direction * 10;
+
+            // Deal damage
+            enemy.Health -= damage;
+
+
+            var targetsInProximity = Main.gsm.gameScene.GetTargetsWithinRadius(enemy.Position, (float)aoeRadius);
+            foreach (var target in targetsInProximity)
+            {
+                var dist = Vector2.Distance(target.Position, _position);
+
+                var _damage = damage * Math.Exp(-dist / (float)aoeRadius);
+
+                target.Health -= ((int)_damage);
+
+            }
             // Start shoot cooldown
             shootCooldown.ResetAndStart(shootSpeed);
         }

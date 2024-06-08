@@ -13,6 +13,7 @@ namespace MobSlayer
 {
     internal class Button
     {
+        public Vector2 Position { get => position; set => position = value; }  
         // Button Base Variables
         string text;
         Vector2 position;
@@ -36,6 +37,8 @@ namespace MobSlayer
             this.text = text;
             position = pos;
             _delegate = @delegate;
+            mouseState = Mouse.GetState();
+
         }
         public void Create(ContentManager content)
         {

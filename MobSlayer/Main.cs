@@ -1,15 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using WinForm;
 
 namespace MobSlayer
 {
     public class Main : Game
     {
-        internal static GameStateManager gsm;
+        public static GameStateManager gsm;
 
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
+
 
         public Main()
         {
@@ -31,7 +33,7 @@ namespace MobSlayer
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Assets.LoadTextures(Content);
-            gsm = new(Content);
+            gsm = new(Content, this);
             // Inside LoadContent method
             // Inside LoadContent method
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
@@ -43,7 +45,6 @@ namespace MobSlayer
         {
             // Update State Manager
             gsm.Update(gameTime);
-            // DEBUG
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 gsm.ChangeLevel(GameStateManager.GameState.Menu);

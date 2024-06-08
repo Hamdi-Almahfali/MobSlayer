@@ -17,6 +17,7 @@ namespace MobSlayer
         public int Money { get => _money; set => _money = value; }
         public int Health { get => _health; set => _health = value; }
         public int EnemiesAlive { get => _enemiesAlive; set => _enemiesAlive = value; }
+        public bool InfHealth { get => _infHealth; set => _infHealth = value; }
         public GameState CurrentGameState { get => _gameState; }
         public enum GameState
         {
@@ -44,6 +45,7 @@ namespace MobSlayer
         private int _money;
         private int _health; // Health goes from 0(dead) to 10(full)
         private int _enemiesAlive;
+        private bool _infHealth = false;
         // Gui shop
         public GuiShop _guiShop;
 
@@ -83,6 +85,11 @@ namespace MobSlayer
             foreach (Tower tower in _towerList)
             {
                 tower.Update(gt);
+            }
+            // Lose if health <= 0
+            if (_health <= 0)
+            {
+                Main.gsm.ChangeLevel(GameStateManager.GameState.Lose);
             }
         }
         public void Draw(SpriteBatch sb)
@@ -129,6 +136,19 @@ namespace MobSlayer
                 _guiShop.towerItem = null;
                 _guiShop.ItemInHand = false;
             }
+        }
+        public List<Enemy> GetTargetsWithinRadius(Vector2 position, float radius)
+        {
+            List<Enemy> result = new List<Enemy>();
+            foreach (var enemy in _monsterManager.enemies)
+            {
+                if (radius > Vector2.Distance(enemy.Position, position))
+                {
+                    result.Add(enemy);
+                }
+            }
+
+            return result;
         }
         public void NextWave()
         {

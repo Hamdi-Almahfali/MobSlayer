@@ -27,9 +27,11 @@ namespace MobSlayer
                 public static Texture2D tex_game_wave2;
                 public static Texture2D tex_game_wave3;
                 public static Texture2D tex_game_health;
+                public static Texture2D tex_game_loss;
 
             // Objects
         public static Texture2D tex_enemy_batS;
+        public static Texture2D tex_enemy_batW;
         public static Texture2D tex_obj_platform1;
         public static Texture2D tex_obj_platform2;
         public static Texture2D tex_obj_platform3;
@@ -61,8 +63,10 @@ namespace MobSlayer
             tex_game_wave2 = content.Load<Texture2D>(@"assets\UI\wave2");
             tex_game_wave3 = content.Load<Texture2D>(@"assets\UI\wave3");
             tex_game_health = content.Load<Texture2D>(@"assets\UI\health");
+            tex_game_loss = content.Load<Texture2D>(@"assets\UI\youDied");
 
             tex_enemy_batS = content.Load<Texture2D>(@"assets\Entities\bat_strong");
+            tex_enemy_batW = content.Load<Texture2D>(@"assets\Entities\bat_weak");
             tex_obj_platform1 = content.Load<Texture2D>(@"assets\Objects\platform1");
             tex_obj_platform2 = content.Load<Texture2D>(@"assets\Objects\platform2");
             tex_obj_platform3 = content.Load<Texture2D>(@"assets\Objects\platform3");

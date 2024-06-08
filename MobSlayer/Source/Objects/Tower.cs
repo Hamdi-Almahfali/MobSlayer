@@ -17,7 +17,7 @@ namespace MobSlayer
         private float shootSpeed = 1f;
         private int damage = 3;
         private int aoeRadius;
-        private int slowDuration;
+        private float? slowDuration;
         private int range;
         private CustomTimer shootCooldown;
         private Vector2 turretPosition;
@@ -101,6 +101,12 @@ namespace MobSlayer
             // Deal damage
             enemy.Health -= damage;
 
+            // Apply frost
+            if (slowDuration != null)
+            {
+                enemy.Slowdown((float)slowDuration);
+            }
+
             // Start shoot cooldown
             shootCooldown.ResetAndStart(shootSpeed);
         }
@@ -156,22 +162,23 @@ namespace MobSlayer
             {
                 case Item.ItemType.Basic:
                     turretTexture = Assets.tex_obj_turret1;
-                    range = BN.ShooterRange;
-                    damage = BN.ShooterDamage;
-                    shootSpeed = BN.ShooterShotSpeed;
+                    range = Main.gsm.BN.ShooterRange;
+                    damage = Main.gsm.BN.ShooterDamage;
+                    shootSpeed = Main.gsm.BN.ShooterShotSpeed;
                     break;
                 case Item.ItemType.Cannon:
                     turretTexture = Assets.tex_obj_turret3;
-                    range = BN.CannonRange;
-                    damage = BN.CannonDamage;
-                    shootSpeed = BN.CannonShotSpeed;
-                    aoeRadius = BN.CannonAoe;
+                    range = Main.gsm.BN.CannonRange;
+                    damage = Main.gsm.BN.CannonDamage;
+                    shootSpeed = Main.gsm.BN.CannonShotSpeed;
+                    aoeRadius = Main.gsm.BN.CannonAoe;
                     break;
                 case Item.ItemType.Icy:
                     turretTexture = Assets.tex_obj_turret2;
-                    range = BN.FrostRange;
-                    shootSpeed = BN.FrostShotSpeed;
-                    damage = BN.FrostDamage;
+                    range = Main.gsm.BN.FrostRange;
+                    shootSpeed = Main.gsm.BN.FrostShotSpeed;
+                    damage = Main.gsm.BN.FrostDamage;
+                    slowDuration = Main.gsm.BN.FrostSlowDuration;
                     break;
                 default:
                     break;

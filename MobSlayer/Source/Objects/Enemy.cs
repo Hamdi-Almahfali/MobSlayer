@@ -25,6 +25,11 @@ namespace MobSlayer
         protected CatmullRomPath cpath_moving;
         protected float curve_curpos = 0;
         float curve_speed = 0.1f;
+        float original_curve_speed;
+        // Slow down effects
+        protected int affectedByMovement = 1;
+        private CustomTimer slowCooldown;
+        protected Color _spriteColor;
 
         protected int _pathIndex;
 
@@ -41,9 +46,12 @@ namespace MobSlayer
 
         public Enemy(int reward, float moveSpeed, Vector2 position, Texture2D texture, int frameCount, int speed) : base(position, texture)
         {
+            _spriteColor = Color.White;
+            slowCooldown = new CustomTimer();
             _hitbox.X = (int)position.X;
             _hitbox.Y = (int)position.Y;
             curve_speed = moveSpeed;
+            original_curve_speed = moveSpeed;
             CalculateFrames(frameCount, speed);
             float tension = 0.9f;
             cpath_moving = new(Main.graphics.GraphicsDevice, tension);
@@ -56,9 +64,9 @@ namespace MobSlayer
 
         public void Update(GameTime gt)
         {
-            Debug.Print(Main.gsm.gameScene._monsterManager.CurrentWave.nrOfmonstInCurrentWave.ToString());
             if (_isHit)
                 return;
+            slowCooldown.Update(gt);
             _position.X = _hitbox.X;
             _position.Y = _hitbox.Y;
 
@@ -79,6 +87,13 @@ namespace MobSlayer
             // Kill if health below 0
             if (_health <= 0)
                 Kill();
+
+            // Reset slowing down effect
+            if (slowCooldown.IsDone())
+            {
+                curve_speed = original_curve_speed;
+                _spriteColor = Color.White;
+            }
         }
         public void Draw(SpriteBatch sb)
         {
@@ -89,11 +104,15 @@ namespace MobSlayer
             if (curve_curpos < 1 & curve_curpos > 0)
             {
                 var center = new Vector2(_texture.Width / 2, _texture.Height / 2);
-                sb.Draw(_texture, _position, source, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                sb.Draw(_texture, _position, source, _spriteColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
                 //sb.Draw(Assets.tex_obj_platform1, _position, Color.White);
                 //DrawMovingObject(curve_curpos, sb);
                 if (_health != _maxHealth)
                     DrawHealth(sb);
+                if (curve_speed != original_curve_speed)
+                {
+
+                }
             }
         }
         public void Kill()
@@ -122,6 +141,15 @@ namespace MobSlayer
                 Main.gsm.gameScene.EnemiesAlive--;
                 _isHit = true;
                 Main.gsm.gameScene.Health--;
+            }
+        }
+        public void Slowdown(float duration)
+        {
+            if (slowCooldown.IsDone())
+            {
+                curve_speed *= Main.gsm.BN.FrostSlowAmount;
+                slowCooldown.ResetAndStart(duration);
+                _spriteColor = Color.Cyan;
             }
         }
         public void DrawHealth(SpriteBatch sb)

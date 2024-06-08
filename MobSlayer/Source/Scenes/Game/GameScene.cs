@@ -50,6 +50,8 @@ namespace MobSlayer
         public GameScene()
         {
             Create();
+            _money = Main.gsm.BN.StartingMoney;
+            _health = 10;
         }
         public void Create()
         {
@@ -61,8 +63,7 @@ namespace MobSlayer
             _showWaveTitle = new ShowWaveTitle(_gameState);
             _guiShop = new GuiShop(this);
 
-            _money = BN.StartingMoney;
-            _health = 10;
+
 
             _renderTarget = new RenderTarget2D(Main.graphics.GraphicsDevice,
             Main.graphics.GraphicsDevice.Viewport.Width, Main.graphics.GraphicsDevice.Viewport.Height);

@@ -12,6 +12,8 @@ namespace MobSlayer
         public MenuScene menuScene;
         public GameScene gameScene;
 
+        public BN BN;
+
         ContentManager content;
 
         // Game states
@@ -32,6 +34,7 @@ namespace MobSlayer
         public GameStateManager(ContentManager content)
         {
             this.content = content;
+            BN = new BN();
 
             Create();
         }
@@ -84,6 +87,8 @@ namespace MobSlayer
             switch (level)
             {
                 case GameState.Menu:
+                    if (gameScene != null)
+                        gameScene = null;
                     menuScene = new();
                     menuScene.Create(content);
                     State = level;
@@ -91,7 +96,8 @@ namespace MobSlayer
                 case GameState.Settings:
                     break;
                 case GameState.Game:
-                    gameScene = new();
+                    BN = new BN();
+                    gameScene = new GameScene();
                     State = level;
                     break;
                 case GameState.Win:

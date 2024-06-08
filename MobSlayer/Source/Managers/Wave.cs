@@ -19,20 +19,20 @@ namespace MobSlayer
             switch (wave)
             {
                 case 0:
-                    mBetweenCreation        = BN.Wave1BatsDensity;
-                    nrOfmonstInCurrentWave  = BN.Wave1BatsAmount;
+                    mBetweenCreation        = Main.gsm.BN.Wave1BatsDensity;
+                    nrOfmonstInCurrentWave  = Main.gsm.BN.Wave1BatsAmount;
                     break;
                 case 1:
-                    mBetweenCreation        = BN.Wave2BatsDensity;
-                    nrOfmonstInCurrentWave  = BN.Wave2BatsAmount;
+                    mBetweenCreation        = Main.gsm.BN.Wave2BatsDensity;
+                    nrOfmonstInCurrentWave  = Main.gsm.BN.Wave2BatsAmount;
                     break;
                 case 2:
-                    mBetweenCreation        = BN.Wave3BatsDensity;
-                    nrOfmonstInCurrentWave  = BN.Wave3BatsAmount;
+                    mBetweenCreation        = Main.gsm.BN.Wave3BatsDensity;
+                    nrOfmonstInCurrentWave  = Main.gsm.BN.Wave3BatsAmount;
                     break;
                 default:
-                    mBetweenCreation = BN.Wave3BatsDensity;
-                    nrOfmonstInCurrentWave = BN.Wave3BatsAmount;
+                    mBetweenCreation = Main.gsm.BN.Wave3BatsDensity;
+                    nrOfmonstInCurrentWave = Main.gsm.BN.Wave3BatsAmount;
                     break;
 
             }

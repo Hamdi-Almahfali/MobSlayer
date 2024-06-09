@@ -128,7 +128,7 @@ namespace MobSlayer
                 Main.gsm.gameScene.Money += reward;
             }
         }
-        public void DamagePlayer()
+        public virtual void DamagePlayer()
         {
             // If enemy exists and player doesnt have infinite health
             {

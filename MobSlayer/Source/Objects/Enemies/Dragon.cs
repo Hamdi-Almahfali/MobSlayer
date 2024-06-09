@@ -21,6 +21,13 @@ namespace MobSlayer
                 Main.gsm.ChangeLevel(GameStateManager.GameState.Win);
             }
         }
+        public override void DamagePlayer()
+        {
+            if (!_isHit)
+            {
+                Main.gsm.ChangeLevel(GameStateManager.GameState.Lose);
+            }
+        }
         public override void DrawHealth(SpriteBatch sb)
         {
             var maxSize = new Point(70, 2);

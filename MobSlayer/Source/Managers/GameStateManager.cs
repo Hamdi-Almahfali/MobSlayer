@@ -14,6 +14,8 @@ namespace MobSlayer
         public GameScene gameScene;
         public LossScene lossScene;
 
+        public GameTime gameTime;
+
         public bool IsPaused { get => _isPaused; set => _isPaused = value; }
 
         public BN BN;
@@ -42,6 +44,7 @@ namespace MobSlayer
         }
         public GameStateManager(ContentManager content, Main main)
         {
+            gameTime = new GameTime();
             this.content = content;
             BN = new BN();
 
@@ -55,6 +58,7 @@ namespace MobSlayer
         }
         public void Update(GameTime gt)
         {
+            gameTime = gt;
             switch (_state)
             {
                 case GameState.Menu:

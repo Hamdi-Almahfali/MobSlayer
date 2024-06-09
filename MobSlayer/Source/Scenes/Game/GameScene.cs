@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MobSlayer.Source;
+using MobSlayer.Source.Managers;
 using Spline;
 using System;
 using System.Collections.Generic;
@@ -41,6 +43,7 @@ namespace MobSlayer
 
 
         RenderTarget2D _renderTarget; // Level's render target
+        public List<ParticleEmitter> ParticleEmitters { get; private set; }
 
         private int _money;
         private int _health; // Health goes from 0(dead) to 10(full)
@@ -57,6 +60,7 @@ namespace MobSlayer
         }
         public void Create()
         {
+            ParticleEmitters = new List<ParticleEmitter>();
             _currentWave = new Wave((int)_gameState);
             _level = new Level(Main.graphics.GraphicsDevice);
             _towerList = new List<Tower>();
@@ -78,6 +82,10 @@ namespace MobSlayer
         }
         public void Update(GameTime gt)
         {
+            foreach (ParticleEmitter emitter in ParticleEmitters)
+            {
+                emitter.Update(gt);
+            }
             _monsterManager.Update(gt);
             _showWaveTitle.Update(gt);
 
@@ -116,13 +124,17 @@ namespace MobSlayer
             Main.graphics.GraphicsDevice.Clear(color);
             sb.Begin();
             _level.Draw(sb);
-            _monsterManager.Draw(sb);
 
             foreach (Tower tower in _towerList)
             {
                 tower.Draw(sb);
             }
+            _monsterManager.Draw(sb);
             _guiShop.Draw(sb);
+            foreach (ParticleEmitter emitter in ParticleEmitters)
+            {
+                emitter.Draw(sb);
+            }
             _showWaveTitle.Draw(sb);
             sb.End();
 
@@ -135,7 +147,10 @@ namespace MobSlayer
                 _towerList.Add(new Tower(position,type));
                 _guiShop.towerItem = null;
                 _guiShop.ItemInHand = false;
+                var dollar = Assets.tex_env_dollar;
+                ParticleEmitters.Add(new ParticleEmitter(false, dollar, 2, new Vector2(position.X + dollar.Width / 2, position.Y)));
             }
+            
         }
         public List<Enemy> GetTargetsWithinRadius(Vector2 position, float radius)
         {

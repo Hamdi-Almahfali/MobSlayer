@@ -8,31 +8,31 @@ namespace MobSlayer
 {
     public class BN
     {
-        public int StartingMoney = 500;
+        public readonly int StartingMoney = 500;
 
-        public int ShooterPrice = 150;
-        public int CannonPrice = 300;
-        public int FrostPrice = 200;
+        public readonly int ShooterPrice = 150;
+        public readonly int CannonPrice = 300;
+        public readonly int FrostPrice = 200;
 
-        public int ShooterDamage = 5;
-        public float ShooterShotSpeed = 1.1f;
-        public int ShooterRange = 220;
+        public readonly int ShooterDamage = 4;
+        public readonly float ShooterShotSpeed = 0.6f;
+        public readonly int ShooterRange = 250;
 
-        public int CannonDamage = 10;
-        public float CannonShotSpeed = 2f;
-        public int CannonRange = 140;
-        public float CannonAoe = 120f;
+        public readonly int CannonDamage = 10;
+        public readonly float CannonShotSpeed = 2f;
+        public readonly int CannonRange = 140;
+        public readonly float CannonAoe = 120f;
 
-        public int FrostDamage = 1;
-        public float FrostShotSpeed = 0.3f;
-        public int FrostRange = 300;
-        public float FrostSlowDuration = 1.5f;
-        public float FrostSlowAmount = 0.6f;
+        public readonly int FrostDamage = 1;
+        public readonly float FrostShotSpeed = 0.3f;
+        public readonly int FrostRange = 300;
+        public readonly float FrostSlowDuration = 1.5f;
+        public readonly float FrostSlowAmount = 0.6f;
 
 
         public int BatHealth = 10; // Max Health
-        public int BatKillReward = 10; // Money recieved by killing bat
-        public int BirdKillReward = 5; // Money recieved by killing weak bat
+        public int BatKillReward = 25; // Money recieved by killing bat
+        public int BirdKillReward = 10; // Money recieved by killing weak bat
 
         public float Wave1BatSpeed = 0.05f;
         public int Wave1BatsDensity = 400;

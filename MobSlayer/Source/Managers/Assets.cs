@@ -32,6 +32,7 @@ namespace MobSlayer
             // Objects
         public static Texture2D tex_enemy_batS;
         public static Texture2D tex_enemy_batW;
+        public static Texture2D tex_enemy_dragon;
         public static Texture2D tex_obj_platform1;
         public static Texture2D tex_obj_platform2;
         public static Texture2D tex_obj_platform3;
@@ -42,6 +43,9 @@ namespace MobSlayer
             // Environment
         public static Texture2D tex_env_grass0;
         public static Texture2D tex_env_sand0;
+        public static Texture2D tex_env_smoke;
+        public static Texture2D tex_env_frost;
+        public static Texture2D tex_env_dollar;
 
 
 
@@ -67,6 +71,7 @@ namespace MobSlayer
 
             tex_enemy_batS = content.Load<Texture2D>(@"assets\Entities\bat_strong");
             tex_enemy_batW = content.Load<Texture2D>(@"assets\Entities\bat_weak");
+            tex_enemy_dragon = content.Load<Texture2D>(@"assets\Entities\dragon");
             tex_obj_platform1 = content.Load<Texture2D>(@"assets\Objects\platform1");
             tex_obj_platform2 = content.Load<Texture2D>(@"assets\Objects\platform2");
             tex_obj_platform3 = content.Load<Texture2D>(@"assets\Objects\platform3");
@@ -76,6 +81,9 @@ namespace MobSlayer
 
             tex_env_grass0 = content.Load<Texture2D>(@"assets\Seamless\grass0");
             tex_env_sand0 = content.Load<Texture2D>(@"assets\Seamless\sand0");
+            tex_env_smoke = content.Load<Texture2D>(@"assets\Entities\smoke");
+            tex_env_frost = content.Load<Texture2D>(@"assets\Entities\frost");
+            tex_env_dollar = content.Load<Texture2D>(@"assets\Entities\dollar");
 
             tsb = content.Load<Texture2D>(@"transparentSquareBackground");
 

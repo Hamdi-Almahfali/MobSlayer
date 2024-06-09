@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Microsoft.Xna;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MobSlayer;
+using MobSlayer.Source.Managers;
+using SharpDX.Direct3D9;
+using SharpDX.MediaFoundation;
 
 namespace MobSlayer
 {
@@ -111,11 +116,13 @@ namespace MobSlayer
 
             // Deal damage
             enemy.Health -= damage;
+            enemy.hurtCooldown.ResetAndStart(1);
 
             // Apply frost
             if (slowDuration != null)
             {
                 enemy.Slowdown((float)slowDuration);
+                Main.gsm.gameScene.ParticleEmitters.Add(new ParticleEmitter(true, Assets.tex_env_frost, 15, enemy.Position, 0.8f));
             }
 
             // Start shoot cooldown
@@ -134,7 +141,7 @@ namespace MobSlayer
 
             // Deal damage
             enemy.Health -= damage;
-
+            enemy.hurtCooldown.ResetAndStart(1);
 
             var targetsInProximity = Main.gsm.gameScene.GetTargetsWithinRadius(enemy.Position, (float)aoeRadius);
             foreach (var target in targetsInProximity)
@@ -146,6 +153,9 @@ namespace MobSlayer
                 target.Health -= ((int)_damage);
 
             }
+            var smoke = Assets.tex_env_smoke;
+            var position = new Vector2(enemy.Position.X - smoke.Width /2, enemy.Position.Y - smoke.Height / 2);
+            Main.gsm.gameScene.ParticleEmitters.Add(new ParticleEmitter(false, smoke, 15, position));
             // Start shoot cooldown
             shootCooldown.ResetAndStart(shootSpeed);
         }

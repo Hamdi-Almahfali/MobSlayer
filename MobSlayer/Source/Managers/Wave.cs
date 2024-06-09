@@ -11,9 +11,11 @@ namespace MobSlayer
         public int mBetweenCreation;
         public int nrOfmonstInCurrentWave;
         public float enemiesSpeed;
+        public int wave;
         public Wave(int wave)
         {
             SetWaveProperties(wave);
+            this.wave = wave;
         }
         private void SetWaveProperties(int wave)
         {
@@ -34,6 +36,11 @@ namespace MobSlayer
                     nrOfmonstInCurrentWave  = Main.gsm.BN.Wave3BatsAmount;
                     enemiesSpeed            = Main.gsm.BN.Wave3BatSpeed;
 
+                    break;
+                case 3:
+                    mBetweenCreation = 1;
+                    nrOfmonstInCurrentWave = 1;
+                    enemiesSpeed = Main.gsm.BN.Wave2BatSpeed;
                     break;
                 default:
                     mBetweenCreation = Main.gsm.BN.Wave3BatsDensity;

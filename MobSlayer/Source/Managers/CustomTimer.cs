@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MobSlayer
 {
-    internal class CustomTimer
+    public class CustomTimer
     {
         private double currentTime = 0.0;
         public void ResetAndStart(double delay)

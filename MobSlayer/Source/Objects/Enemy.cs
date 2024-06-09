@@ -29,6 +29,7 @@ namespace MobSlayer
         // Slow down effects
         protected int affectedByMovement = 1;
         private CustomTimer slowCooldown;
+        public CustomTimer hurtCooldown;
         protected Color _spriteColor;
 
         protected int _pathIndex;
@@ -37,6 +38,7 @@ namespace MobSlayer
         protected int _health = 10;
 
         protected bool _isHit;
+        protected bool _isBoss = false;
 
         public bool IsHit { get { return _isHit; } }
         public int Health { get { return _health; } set { _health = value; } }
@@ -48,6 +50,7 @@ namespace MobSlayer
         {
             _spriteColor = Color.White;
             slowCooldown = new CustomTimer();
+            hurtCooldown = new CustomTimer();
             _hitbox.X = (int)position.X;
             _hitbox.Y = (int)position.Y;
             curve_speed = moveSpeed;
@@ -67,6 +70,7 @@ namespace MobSlayer
             if (_isHit)
                 return;
             slowCooldown.Update(gt);
+            hurtCooldown.Update(gt);
             _position.X = _hitbox.X;
             _position.Y = _hitbox.Y;
             CalculateFrames(gt);
@@ -93,6 +97,10 @@ namespace MobSlayer
                 curve_speed = original_curve_speed;
                 _spriteColor = Color.White;
             }
+            if (!hurtCooldown.IsDone() && slowCooldown.IsDone())
+            {
+                _spriteColor = Color.Salmon;
+            }
         }
         public void Draw(SpriteBatch sb)
         {
@@ -102,8 +110,8 @@ namespace MobSlayer
             var level = Main.gsm.gameScene._level;
             if (curve_curpos < 1 & curve_curpos > 0)
             {
-                var center = new Vector2(_texture.Width / 2, _texture.Height / 2);
-                sb.Draw(_texture, _position + center, source, _spriteColor, 0, center, 1, SpriteEffects.None, 0f);
+                var center = new Vector2(source.Width / 2, source.Height / 2);
+                sb.Draw(_texture, _position, source, _spriteColor, 0, center, 1, SpriteEffects.None, 0);
                 //sb.Draw(Assets.tex_obj_platform1, _position, Color.White);
                 //DrawMovingObject(curve_curpos, sb);
                 if (_health != _maxHealth)
@@ -130,8 +138,10 @@ namespace MobSlayer
         }
         public void DamagePlayer()
         {
-            if (!_isHit && !Main.gsm.gameScene.InfHealth)
+            // If enemy exists and player doesnt have infinite health
             {
+                if (!_isHit && !Main.gsm.gameScene.InfHealth) 
+                // Start next wave if this is last enemy to exist
                 if (Main.gsm.gameScene.EnemiesAlive == 1 && Main.gsm.gameScene._monsterManager.CurrentWave.nrOfmonstInCurrentWave <= 0)
                 {
                     Main.gsm.gameScene.NextWave();
@@ -144,7 +154,7 @@ namespace MobSlayer
         }
         public void Slowdown(float duration)
         {
-            if (slowCooldown.IsDone())
+            if (slowCooldown.IsDone() && !_isBoss)
             {
                 curve_speed *= Main.gsm.BN.FrostSlowAmount;
                 slowCooldown.ResetAndStart(duration);
@@ -160,7 +170,7 @@ namespace MobSlayer
             color.G = (byte)255;
 
             var size = (float)maxSize.X * ((float)_health / (float)_maxHealth);
-            var position = _position.ToPoint() - new Point(0, 10);
+            var position = _position.ToPoint() - new Point(38, 20);
 
             sb.Draw(Assets.texHP, new Rectangle(position - new Point(1, 1), maxSize + new Point(2, 2)), Color.Black);
             sb.Draw(Assets.texHP, new Rectangle(position, new Point((int)size, maxSize.Y)), color);

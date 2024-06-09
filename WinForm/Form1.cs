@@ -110,7 +110,8 @@ namespace WinForm
                 {
                     if (enemy.IsHit)
                         continue;
-                    Main.gsm.gameScene._monsterManager.enemies.Remove(enemy);
+                    enemy.IsHit = true;
+                    break;
                 }
             }
         }

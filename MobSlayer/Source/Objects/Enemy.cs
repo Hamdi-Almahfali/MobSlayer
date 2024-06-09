@@ -32,7 +32,7 @@ namespace MobSlayer
         protected bool _isHit;
         protected bool _isBoss = false;
 
-        public bool IsHit { get { return _isHit; } }
+        public bool IsHit { get { return _isHit; } set { _isHit = value; } }
         public int Health { get { return _health; } set { _health = value; } }
 
         // Actually rectange to draw the sprite

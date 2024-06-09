@@ -7,6 +7,7 @@ namespace MobSlayer
     public class GameScene
     {
         #region Public properties
+        public List<ParticleEmitter> ParticleEmitters { get; private set; } // List for all particle emitters
         public int Money { get => _money; set => _money = value; }
         public int Health { get => _health; set => _health = value; }
         public int EnemiesAlive { get => _enemiesAlive; set => _enemiesAlive = value; }
@@ -21,36 +22,34 @@ namespace MobSlayer
         }
         #endregion
 
-        // Managers
-        public Level _level;
-        public MonsterManager _monsterManager;
-        private ShowWaveTitle _showWaveTitle;
-        private GameState _gameState;
-        public List<Tower> _towerList;
-        private List<Vector2> controlPoints;
-        private Texture2D texture_controlPoints;
-
-        private Wave _currentWave;
-
-
-        RenderTarget2D _renderTarget; // Level's render target
-        public List<ParticleEmitter> ParticleEmitters { get; private set; }
-
-        private int _money;
-        private int _health; // Health goes from 0(dead) to 10(full)
-        private int _enemiesAlive;
-        private bool _infHealth = false;
         // Gui shop
         public GuiShop _guiShop;
+
+        // Managers
+        public List<Tower> _towerList;
+        public Level _level;
+        public MonsterManager _monsterManager;
+
+        private ShowWaveTitle _showWaveTitle;
+        private GameState _gameState;
+        private Wave _currentWave; // The current wave
+        private RenderTarget2D _renderTarget; // Level's render target
+
+
+
+        private int _money; // Current money amount
+        private int _health; // Health goes from 0(dead) to 10(full)
+        private int _enemiesAlive; // The count of alive enemies currently
+        private bool _infHealth = false; // If player has infinite health
 
         public GameScene()
         {
             Create();
-            _money = Main.gsm.BN.StartingMoney;
-            _health = 10;
         }
         public void Create()
         {
+            _money = Main.gsm.BN.StartingMoney;
+            _health = 10;
             ParticleEmitters = new List<ParticleEmitter>();
             _currentWave = new Wave((int)_gameState);
             _level = new Level(Main.graphics.GraphicsDevice);

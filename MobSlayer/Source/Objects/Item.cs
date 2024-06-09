@@ -1,12 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MobSlayer
 {
@@ -24,7 +18,7 @@ namespace MobSlayer
         private GuiShop shop;
         private ItemType itemType;
         private int price;
-        private int[] priceArray = {Main.gsm.BN.ShooterPrice, Main.gsm.BN.CannonPrice, Main.gsm.BN.FrostPrice,8,10,10,10};
+        private int[] priceArray = { Main.gsm.BN.ShooterPrice, Main.gsm.BN.CannonPrice, Main.gsm.BN.FrostPrice, 8, 10, 10, 10 };
         private Vector2 pricePosition;
         private string _name;
         private Texture2D _icon;
@@ -50,7 +44,7 @@ namespace MobSlayer
 
             // Choose name
             SetItemProperties();
-            
+
         }
         public void Update(GameTime gt)
         {

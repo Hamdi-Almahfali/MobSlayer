@@ -3,17 +3,12 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace MobSlayer
 {
     internal class Button
     {
-        public Vector2 Position { get => position; set => position = value; }  
+        public Vector2 Position { get => position; set => position = value; }
         // Button Base Variables
         string text;
         Vector2 position;
@@ -45,7 +40,7 @@ namespace MobSlayer
             color = Color.White;
             StringProperties();
         }
-        
+
         public void Update(GameTime gt)
         {
             mouseState = Mouse.GetState();
@@ -79,7 +74,7 @@ namespace MobSlayer
         {
             // Measure the size of the text
             Vector2 textSize = Assets.fnt_pixel.MeasureString(text);
-            position = new Vector2(position.X - textSize.X /2, position.Y - textSize.Y /2);
+            position = new Vector2(position.X - textSize.X / 2, position.Y - textSize.Y / 2);
             bounds = new Rectangle((int)position.X, (int)position.Y, (int)textSize.X, (int)textSize.Y / 2);
             center = new Vector2(bounds.Width / 2, bounds.Height / 2);
         }

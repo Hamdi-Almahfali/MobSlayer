@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace MobSlayer
 {
+    /// <summary>
+    /// Game shop class
+    /// For buying towers and displaying player properties
+    /// </summary>
     public class GuiShop
     {
         public Vector2 Position { get => position; set => position = value; }
@@ -33,7 +37,7 @@ namespace MobSlayer
             {
                 // Calculate the position of each box
                 Vector2 position = new Vector2(initialPosition.X + i * (boxWidth + gap), initialPosition.Y);
-                Item item = new Item(position, (Item.ItemType) i, this);
+                Item item = new Item(position, (Item.ItemType)i, this);
                 items.Add(item);
             }
         }
@@ -65,29 +69,33 @@ namespace MobSlayer
         }
         public void BuyTower(Item.ItemType itemType, int price, Texture2D icon)
         {
+            // Get tower in hand
             towerItem = new TowerItem(itemType, icon, price, this);
             gs.Money -= price;
         }
 
         public void DrawRectangles(SpriteBatch sb)
         {
+            // Drawing background design backgrounds
             sb.DrawRectangle(new Rectangle(0, 700, Data.screenW, 15), Data.HexToColor("3f3f74"));
             sb.DrawRectangle(new Rectangle(0, 710, Data.screenW, 200), Data.HexToColor("68689c"));
             sb.DrawRectangle(new Rectangle(0, 710, 350, 200), Data.HexToColor("222034"));
         }
         public void DrawMoney(SpriteBatch sb)
         {
-            sb.DrawString(Assets.fnt_pixel, $"MONEY: ${gs.Money}", new Vector2(0,732), Assets.yellow);
+            // Draw the money count
+            sb.DrawString(Assets.fnt_pixel, $"MONEY: ${Main.gsm.gameScene.Money}", new Vector2(0, 732), Assets.yellow);
         }
         public void DrawHealth(SpriteBatch sb)
         {
+            // Draw Health bar
             var healthBarLength = 330;
             var outlineThickness = 4;
             sb.DrawRectangle(new Rectangle(8, 839, healthBarLength + outlineThickness, 48 + outlineThickness), Color.White); // Outline rectangle
             sb.DrawRectangle(new Rectangle(10, 841, healthBarLength, 48), Data.HexToColor("300808")); // Background of healthbar
 
             // Healthbar 0-10
-            percentage = MathHelper.Lerp(percentage,(gs.Health / 10.0f),0.1f);
+            percentage = MathHelper.Lerp(percentage, (gs.Health / 10.0f), 0.1f);
             int healthBarWidth = (int)(healthBarLength * percentage);
 
             // Draw the health bar

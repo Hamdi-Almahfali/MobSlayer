@@ -1,18 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Graphics;
-using MobSlayer.Source.Scenes.Menu;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using MobSlayer.Source.Scenes.Menu;
 using WinForm;
 
 namespace MobSlayer
 {
+    /// <summary>
+    /// The game's state manager
+    /// Game controller
+    /// </summary>
     public class GameStateManager
     {
         // Declaring scenes
         public MenuScene menuScene;
         public GameScene gameScene;
         public LossScene lossScene;
+        public WinScene winScene;
 
         public GameTime gameTime;
 
@@ -74,6 +79,7 @@ namespace MobSlayer
                     GameControls();
                     break;
                 case GameState.Win:
+                    winScene.Update(gt);
                     break;
                 case GameState.Lose:
                     lossScene.Update(gt);
@@ -95,6 +101,7 @@ namespace MobSlayer
                     gameScene.Draw(sb);
                     break;
                 case GameState.Win:
+                    winScene.Draw(sb);
                     break;
                 case GameState.Lose:
                     lossScene.Draw(sb);
@@ -120,6 +127,9 @@ namespace MobSlayer
                     State = level;
                     break;
                 case GameState.Win:
+                    winScene = new();
+                    winScene.Create(content);
+                    State = level;
                     break;
                 case GameState.Lose:
                     lossScene = new();

@@ -1,14 +1,6 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using CatmullRom;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using CatmullRom;
-using System.Windows.Forms;
-using System.Diagnostics;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MobSlayer
 {
@@ -122,7 +114,7 @@ namespace MobSlayer
                 }
             }
         }
-        public void Kill()
+        public virtual void Kill()
         {
             if (!_isHit)
             {
@@ -140,13 +132,13 @@ namespace MobSlayer
         {
             // If enemy exists and player doesnt have infinite health
             {
-                if (!_isHit && !Main.gsm.gameScene.InfHealth) 
-                // Start next wave if this is last enemy to exist
-                if (Main.gsm.gameScene.EnemiesAlive == 1 && Main.gsm.gameScene._monsterManager.CurrentWave.nrOfmonstInCurrentWave <= 0)
-                {
-                    Main.gsm.gameScene.NextWave();
-                    Main.gsm.gameScene._monsterManager.enemies.Remove(this);
-                }
+                if (!_isHit && !Main.gsm.gameScene.InfHealth)
+                    // Start next wave if this is last enemy to exist
+                    if (Main.gsm.gameScene.EnemiesAlive == 1 && Main.gsm.gameScene._monsterManager.CurrentWave.nrOfmonstInCurrentWave <= 0)
+                    {
+                        Main.gsm.gameScene.NextWave();
+                        Main.gsm.gameScene._monsterManager.enemies.Remove(this);
+                    }
                 Main.gsm.gameScene.EnemiesAlive--;
                 _isHit = true;
                 Main.gsm.gameScene.Health--;
@@ -161,15 +153,15 @@ namespace MobSlayer
                 _spriteColor = Color.Cyan;
             }
         }
-        public void DrawHealth(SpriteBatch sb)
+        public virtual void DrawHealth(SpriteBatch sb)
         {
             var maxSize = new Point(70, 2);
 
             var color = new Color();
             color.R = (byte)MathHelper.Min((510 * (_maxHealth - _health)) / 100, 255);
-            color.G = (byte)255;
+            color.G = 255;
 
-            var size = (float)maxSize.X * ((float)_health / (float)_maxHealth);
+            var size = maxSize.X * (_health / (float)_maxHealth);
             var position = _position.ToPoint() - new Point(38, 20);
 
             sb.Draw(Assets.texHP, new Rectangle(position - new Point(1, 1), maxSize + new Point(2, 2)), Color.Black);

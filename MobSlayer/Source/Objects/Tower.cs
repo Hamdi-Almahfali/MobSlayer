@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Microsoft.Xna;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MobSlayer;
-using MobSlayer.Source.Managers;
-using SharpDX.Direct3D9;
-using SharpDX.MediaFoundation;
+using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace MobSlayer
 {
-    internal class Tower : GameObject
+    public class Tower : GameObject
     {
         private Item.ItemType type;
         private Texture2D turretTexture;
@@ -25,6 +16,7 @@ namespace MobSlayer
         private float? aoeRadius;
         private float? slowDuration;
         private int range;
+        private int price;
         private CustomTimer shootCooldown;
         private Vector2 turretPosition;
 
@@ -32,15 +24,18 @@ namespace MobSlayer
         Color circleColor = Color.White; // Color of the circle
 
         private bool isSelected = false;
+        public bool IsSold;
 
-        public Tower(Vector2 position, Item.ItemType type) : base(position)
+        public Tower(Vector2 position, Item.ItemType type, int price) : base(position)
         {
+            this.price = price;
             this.Position = position;
             this.type = type;
+            IsSold = false;
 
             GetTurretType();
 
-            targetPosition = new Vector2 (-50, 250);
+            targetPosition = new Vector2(-50, 250);
             var origin = new Vector2(turretTexture.Width / 2, turretTexture.Height / 2);
             turretPosition = new Vector2((int)Position.X, (int)Position.Y - turretTexture.Height / 2) + origin;
             texture = Assets.tex_obj_platform1;
@@ -66,7 +61,7 @@ namespace MobSlayer
                 {
                     bestEnemy = enemy;
                     bestDist = Vector2.Distance(enemy.Position, _position);
-                    
+
                 }
             }
 
@@ -81,24 +76,27 @@ namespace MobSlayer
                         AOEShoot(bestEnemy);
                 }
             }
-
+            CheckIfSold();
         }
         public void Draw(SpriteBatch sb)
         {
             // Draw platform
             sb.Draw(texture, Position, Color.White);
 
-            // Draw turret
+            // Draw the turret
+            // Get origin of the turret
             var origin = new Vector2(turretTexture.Width / 2, turretTexture.Height / 2);
+            // Get the vector direction to look at
             Vector2 direction = targetPosition - Position;
-            rotation = MathHelper.Lerp(rotation,(float)Math.Atan2(direction.Y, -direction.X),0.2f);
-            //turretPosition = new Vector2((int)Position.X, (int)Position.Y - turretTexture.Height / 2) + origin;
+            // Set the rotation using Math.Atan2 with the direction
+            rotation = MathHelper.Lerp(rotation, (float)Math.Atan2(direction.Y, -direction.X), 0.2f);
+
             turretPosition.X = MathHelper.Lerp(turretPosition.X, Position.X + origin.X, 0.2f);
             turretPosition.Y = MathHelper.Lerp(turretPosition.Y, Position.Y - turretTexture.Height / 2 + origin.Y, 0.2f);
             sb.Draw(turretTexture, turretPosition, null, Color.White, -rotation, origin, 1.0f, SpriteEffects.None, 0f);
             if (KeysStates.GetMouseRect().Intersects(hitbox) || isSelected)
-                DrawRangeCircle(sb,turretPosition);
-            
+                DrawRangeCircle(sb, turretPosition);
+
 
         }
         public void Shoot(Enemy enemy)
@@ -154,10 +152,29 @@ namespace MobSlayer
 
             }
             var smoke = Assets.tex_env_smoke;
-            var position = new Vector2(enemy.Position.X - smoke.Width /2, enemy.Position.Y - smoke.Height / 2);
+            var position = new Vector2(enemy.Position.X - smoke.Width / 2, enemy.Position.Y - smoke.Height / 2);
             Main.gsm.gameScene.ParticleEmitters.Add(new ParticleEmitter(false, smoke, 15, position));
             // Start shoot cooldown
             shootCooldown.ResetAndStart(shootSpeed);
+        }
+        private void CheckIfSold()
+        {
+            if (IsSold)
+                return;
+            // Backspace is pressed
+            if (KeysStates.KeyPressed(Keys.Back))
+            {
+                // Check if Selected
+                if (isSelected)
+                {
+                    // Sell tower
+                    Main.gsm.gameScene.Money += (int)(price / 1.5f);
+                    IsSold = true;
+                    // Add sold money particles
+                    var dollar = Assets.tex_env_dollar;
+                    Main.gsm.gameScene.ParticleEmitters.Add(new ParticleEmitter(false, dollar, 2, new Vector2(Position.X + dollar.Width / 2, Position.Y), 0.5f, Color.Red));
+                }
+            }
         }
         private void DisplayRange()
         {
@@ -177,7 +194,7 @@ namespace MobSlayer
             }
             if (isSelected)
             {
-                circleColor = Color.Maroon;
+                circleColor = Color.Yellow;
             }
             else
             {
@@ -202,7 +219,7 @@ namespace MobSlayer
                 sb.Draw(Main.Pixel, pos1, null, circleColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                 sb.Draw(Main.Pixel, pos2, null, circleColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
-                sb.DrawLine(pos1, pos2, circleColor); // This line assumes you have a method to draw lines
+                sb.DrawLine(pos1, pos2, circleColor);
             }
         }
         private void GetTurretType()

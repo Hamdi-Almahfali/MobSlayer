@@ -1,12 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MobSlayer
 {
+    /// <summary>
+    /// Simple timer class for cooldowns
+    /// </summary>
     public class CustomTimer
     {
         private double currentTime = 0.0;

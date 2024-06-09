@@ -1,13 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MobSlayer
 {
+    /// <summary>
+    /// Static data class for global static variables and extention methods
+    /// </summary>
     internal static class Data
     {
         public const int tileSize = 32;

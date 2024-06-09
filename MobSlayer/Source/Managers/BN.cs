@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MobSlayer
+﻿namespace MobSlayer
 {
+    /// <summary>
+    /// Class for modifying the game's value in one place
+    /// Refernce point for real-time modification
+    /// </summary>
     public class BN
     {
         public readonly int StartingMoney = 500;
@@ -14,8 +12,8 @@ namespace MobSlayer
         public readonly int CannonPrice = 300;
         public readonly int FrostPrice = 200;
 
-        public readonly int ShooterDamage = 4;
-        public readonly float ShooterShotSpeed = 0.6f;
+        public readonly int ShooterDamage = 2;
+        public readonly float ShooterShotSpeed = 0.7f;
         public readonly int ShooterRange = 250;
 
         public readonly int CannonDamage = 10;

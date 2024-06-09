@@ -1,15 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace MobSlayer
 {
+    /// <summary>
+    /// Class for loading all game's textures
+    /// </summary>
     internal class Assets
     {
         // Game palette main colors
@@ -17,19 +14,20 @@ namespace MobSlayer
         public static Color blue = Data.HexToColor("563482");
 
         // Assets
-            // UI
-                // Menu
-                public static Texture2D tex_menu_title;
-                public static Texture2D tex_menu_art;
-                public static Texture2D tex_menu_bg;
-                // In-Game
-                public static Texture2D tex_game_wave1;
-                public static Texture2D tex_game_wave2;
-                public static Texture2D tex_game_wave3;
-                public static Texture2D tex_game_health;
-                public static Texture2D tex_game_loss;
+        // UI
+        // Menu
+        public static Texture2D tex_menu_title;
+        public static Texture2D tex_menu_art;
+        public static Texture2D tex_menu_bg;
+        // In-Game
+        public static Texture2D tex_game_wave1;
+        public static Texture2D tex_game_wave2;
+        public static Texture2D tex_game_wave3;
+        public static Texture2D tex_game_health;
+        public static Texture2D tex_game_loss;
+        public static Texture2D tex_game_win;
 
-            // Objects
+        // Objects
         public static Texture2D tex_enemy_batS;
         public static Texture2D tex_enemy_batW;
         public static Texture2D tex_enemy_dragon;
@@ -40,7 +38,7 @@ namespace MobSlayer
         public static Texture2D tex_obj_turret2;
         public static Texture2D tex_obj_turret3;
 
-            // Environment
+        // Environment
         public static Texture2D tex_env_grass0;
         public static Texture2D tex_env_sand0;
         public static Texture2D tex_env_smoke;
@@ -68,6 +66,7 @@ namespace MobSlayer
             tex_game_wave3 = content.Load<Texture2D>(@"assets\UI\wave3");
             tex_game_health = content.Load<Texture2D>(@"assets\UI\health");
             tex_game_loss = content.Load<Texture2D>(@"assets\UI\youDied");
+            tex_game_win = content.Load<Texture2D>(@"assets\UI\youWon");
 
             tex_enemy_batS = content.Load<Texture2D>(@"assets\Entities\bat_strong");
             tex_enemy_batW = content.Load<Texture2D>(@"assets\Entities\bat_weak");

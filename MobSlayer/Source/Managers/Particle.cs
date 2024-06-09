@@ -1,13 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MobSlayer
 {
+    /// <summary>
+    /// The particle that gets spawned and controlled by the emitter
+    /// </summary>
     public class Particle
     {
         Texture2D texture;
@@ -42,11 +41,15 @@ namespace MobSlayer
             velocity *= 0.99f; // Damping to slow down over time, simulating air resistance
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Color? extraColor)
         {
             float alpha = MathHelper.Clamp(timeLeft / initialTimeLeft, 0, 1);
-            Color color = Color.White * alpha;
-            
+            Color color;
+            if (extraColor != null)
+                color = (Color)extraColor * alpha;
+            else
+                color = Color.White * alpha;
+
             var newPos = new Vector2(position.X + texture.Width / 2, position.Y + texture.Height / 2);
             spriteBatch.Draw(texture, newPos, null, color, rotation, Vector2.Zero, 1, SpriteEffects.None, 0);
         }

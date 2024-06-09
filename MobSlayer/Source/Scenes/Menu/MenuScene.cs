@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -11,22 +10,19 @@ namespace MobSlayer.Source.Scenes.Menu
     {
         List<Button> menuButtons;
         Button btn_play;
-        Button btn_settings;
         Button btn_exit;
 
 
         public MenuScene()
         {
-            
+
         }
         public void Create(ContentManager content)
         {
             menuButtons = new List<Button>();
             btn_play = new("Play", new Vector2(Data.screenW / 2, Data.tileSize * 15), StartGame);
-            btn_settings = new("Settings", new Vector2(Data.screenW / 2, Data.tileSize * 18), Settings);
             btn_exit = new("exit", new Vector2(Data.screenW / 2, Data.tileSize * 21), CloseGame);
             menuButtons.Add(btn_play);
-            menuButtons.Add(btn_settings);
             menuButtons.Add(btn_exit);
 
             foreach (var button in menuButtons)
@@ -37,7 +33,6 @@ namespace MobSlayer.Source.Scenes.Menu
         public void Update(GameTime gt)
         {
             btn_play.Update(gt);
-            btn_settings.Update(gt);
             btn_exit.Update(gt);
         }
         public void Draw(SpriteBatch sb)
@@ -54,16 +49,11 @@ namespace MobSlayer.Source.Scenes.Menu
 
             // Draw the buttons
             btn_play.Draw(sb);
-            btn_settings.Draw(sb);
             btn_exit.Draw(sb);
         }
         private void StartGame()
         {
             Main.gsm.ChangeLevel(GameStateManager.GameState.Game);
-        }
-        private void Settings()
-        {
-
         }
         private void CloseGame()
         {

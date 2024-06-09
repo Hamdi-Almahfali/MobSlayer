@@ -1,15 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MobSlayer.Source;
-using MobSlayer.Source.Managers;
-using Spline;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MobSlayer
 {
@@ -31,11 +22,11 @@ namespace MobSlayer
         #endregion
 
         // Managers
-        public Level  _level;
+        public Level _level;
         public MonsterManager _monsterManager;
         private ShowWaveTitle _showWaveTitle;
         private GameState _gameState;
-        private List<Tower> _towerList;
+        public List<Tower> _towerList;
         private List<Vector2> controlPoints;
         private Texture2D texture_controlPoints;
 
@@ -92,6 +83,8 @@ namespace MobSlayer
             _guiShop.Update(gt);
             foreach (Tower tower in _towerList)
             {
+                if (tower.IsSold)
+                    continue;
                 tower.Update(gt);
             }
             // Lose if health <= 0
@@ -99,6 +92,9 @@ namespace MobSlayer
             {
                 Main.gsm.ChangeLevel(GameStateManager.GameState.Lose);
             }
+            // Make sure money doesnt go past maximum
+            if (Money > 999)
+                Money = 999;
         }
         public void Draw(SpriteBatch sb)
         {
@@ -111,6 +107,8 @@ namespace MobSlayer
             _level.Draw(sb);
             foreach (Tower tower in _towerList)
             {
+                if (tower.IsSold)
+                    continue;
                 tower.Draw(sb);
             }
             //för på skärmen.
@@ -127,6 +125,8 @@ namespace MobSlayer
 
             foreach (Tower tower in _towerList)
             {
+                if (tower.IsSold)
+                    continue;
                 tower.Draw(sb);
             }
             _monsterManager.Draw(sb);
@@ -139,18 +139,18 @@ namespace MobSlayer
             sb.End();
 
         }
-        public void PlaceTower(Item.ItemType type, Vector2 position)
+        public void PlaceTower(Item.ItemType type, Vector2 position, int price)
         {
-            var tower = new Tower(position, type);
+            var tower = new Tower(position, type, price);
             if (CanPlace(tower))
             {
-                _towerList.Add(new Tower(position,type));
+                _towerList.Add(tower);
                 _guiShop.towerItem = null;
                 _guiShop.ItemInHand = false;
                 var dollar = Assets.tex_env_dollar;
                 ParticleEmitters.Add(new ParticleEmitter(false, dollar, 2, new Vector2(position.X + dollar.Width / 2, position.Y)));
             }
-            
+
         }
         public List<Enemy> GetTargetsWithinRadius(Vector2 position, float radius)
         {
@@ -176,7 +176,7 @@ namespace MobSlayer
         }
         private bool CanPlace(GameObject g)
         {
-            if (!new Rectangle(0, 0, (int)_guiShop.Position.X, (int)_guiShop.Position.Y).Intersects(new Rectangle(KeysStates.mouseState.X, KeysStates.mouseState.Y, g.texture.Width,g.texture.Height)))
+            if (!new Rectangle(0, 0, (int)_guiShop.Position.X, (int)_guiShop.Position.Y).Intersects(new Rectangle(KeysStates.mouseState.X, KeysStates.mouseState.Y, g.texture.Width, g.texture.Height)))
                 return false;
             Rectangle adjustedHitbox = g.hitbox;
 

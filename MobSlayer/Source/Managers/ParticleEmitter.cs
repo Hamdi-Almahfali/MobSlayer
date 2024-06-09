@@ -1,10 +1,7 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MobSlayer
 {
@@ -18,8 +15,9 @@ namespace MobSlayer
         bool active = true;
         bool rotate = false;
         Random random;
+        Color _color = Color.White;
 
-        public ParticleEmitter(bool rotate, Texture2D texture, int density, Vector2 position, float timeLeft = 0.5f)
+        public ParticleEmitter(bool rotate, Texture2D texture, int density, Vector2 position, float timeLeft = 0.5f, Color? color = null)
         {
             this.timeLeft = timeLeft;
             this.density = density;
@@ -30,6 +28,9 @@ namespace MobSlayer
             particles = new List<Particle>();
             random = new Random();
             EmitParticles();
+
+            if (color != null)
+                _color = (Color)color;
         }
 
         private void EmitParticles()
@@ -68,7 +69,7 @@ namespace MobSlayer
 
             foreach (var particle in particles)
             {
-                particle.Draw(spriteBatch);
+                particle.Draw(spriteBatch, _color);
             }
         }
     }
